@@ -3,10 +3,31 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Find the Pair</title>
-	<script src="js/common.js"></script>
+
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+	<div id="mainWrapper">
+		<div id="menu">
+			<h1 id="menuTitle">Menu</h1>
+			<input class="menuBtn" id="menuPlayBtn" type="button" value="Play">
+			<input id="playerName" type="text" value="Name">
+			<input class="menuBtn" id="menuHighScoresBtn" type="button" value="High Scores">
+			<select name="difficulty" id="difficulty">
+				<option value="">Difficulty</option>
+				<option value="">6x6</option>
+				<option value="">8x8</option>
+				<option value="">10x10</option>
+				<option value="">12x12</option>
+			</select>
+			<p id="menuColorTitle">Color: </p>
+			<input class="menuBtn" id="menuColorBtn" type="color" value="#ffffff">
+			<!--<input id="backBtn" type="button" value="Back">
+			<input id="startBtn" type="button" value="Start">-->
+		</div>
+		<p>created by resistendi</p>
+	</div>
 	
+	<script src="js/common.js"></script>
 </body>
 </html>
