@@ -289,6 +289,8 @@ option:hover{
     animation: glowing .7s infinite alternate;
 }
 #game #boardWrapper{
+    display: inline-block;
+    float: left;
     width: 560px;
     height: 560px;
 }
@@ -302,6 +304,9 @@ option:hover{
     cursor: pointer;
     text-align: center;
     white-space: nowrap;
+    -moz-box-shadow:0 0 10px var(--theme-color, #fff);
+    -webkit-box-shadow:0 0 10px var(--theme-color, #fff);
+    box-shadow:0 0 10px var(--theme-color, #fff);
 }
 #game #boardWrapper #card::selection{
     background: transparent;
@@ -310,6 +315,86 @@ option:hover{
 #game #boardWrapper .selected{
     color: white;
 }
+
+#game #gameInfo{
+    display: inline-block;
+    float: left;
+    width: 140px;
+    height: 50px;
+}
+
+#game #gameInfo div{
+    color: white;
+    font-size: 25px;
+    text-align: center;
+    height: 30px;
+    width: 100%;
+}
+
+#game #gameInfo .timerLabel{
+    margin-top: 20px;
+}
+
+#game #gameInfo .triesLabel{
+    margin-top: 25px;
+}
+
+#game #gameInfo #gamePauseBtn{
+    margin: 345px auto 0px;
+    width: 120px;
+    transition: .2s;
+}
+#game #gameInfo #gamePauseBtn:hover{
+    -webkit-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+    -moz-box-shadow:0 0 10px var(--theme-color, #fff);
+    -webkit-box-shadow:0 0 10px var(--theme-color, #fff);
+    box-shadow:0 0 10px var(--theme-color, #fff);
+}
+#game #gameInfo #gamePauseBtn:active{
+    -webkit-transform: translate(0, 4px);
+    transform: translate(0, 4px);
+}
+
+#pauseWrapper{
+    visibility: hidden;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .9);
+    margin: -600px -10px;
+    color: white;
+    font-size: 150px;
+    text-align: center;
+    vertical-align: center;
+}
+
+#pauseWrapper .buttonsWrapper{
+    margin: -95px auto;
+    width: 660px;
+}
+
+#pauseWrapper .buttonsWrapper input{
+    display: inline-block;
+    float: left;
+    margin: 0px 20px;
+    font-size: 50px;
+    transition: .2s;
+}
+
+#pauseWrapper .buttonsWrapper input:hover{
+    -webkit-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+    -moz-box-shadow:0 0 10px var(--theme-color, #fff);
+    -webkit-box-shadow:0 0 10px var(--theme-color, #fff);
+    box-shadow:0 0 10px var(--theme-color, #fff);
+}
+
+#pauseWrapper .buttonsWrapper input:active{
+    -webkit-transform: translate(0, 4px);
+    transform: translate(0, 4px);   
+}
+
 /*---animations---*/
 
 @keyframes glowing {

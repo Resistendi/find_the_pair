@@ -56,6 +56,22 @@ function menuFadeOut(){
     }, 780);
 }
 
+//menu fade in func
+function menuFadeIn(){
+  menuTitle.style.setProperty('visibility', 'visible');
+  menuPlayBtn.style.setProperty('visibility', 'visible');
+  menuHighScoresBtn.style.setProperty('visibility', 'visible');
+  menuColorTitle.style.setProperty('visibility', 'visible');
+  menuColorBtn.style.setProperty('visibility', 'visible');
+  menu.style.setProperty('visibility', 'visible');
+  menuTitle.style.setProperty('animation', 'fadeIn 1s');
+  menuPlayBtn.style.setProperty('animation', 'fadeIn 1s');
+  menuHighScoresBtn.style.setProperty('animation', 'fadeIn 1s');
+  menuColorTitle.style.setProperty('animation', 'fadeIn 1s');
+  menuColorBtn.style.setProperty('animation', 'fadeIn 1s');
+  menu.style.setProperty('animation', 'fadeIn 1s');
+}
+
 //game field fadeIn func
 function gameFadeIn(){
   menu.style.setProperty('animation', 'fadeOut 1s');
@@ -157,18 +173,7 @@ hsBackBtn.addEventListener("click", function(){
     hsWrapper.style.setProperty('visibility', 'hidden');
   }, 450);
   setTimeout(function(){
-    menuTitle.style.setProperty('visibility', 'visible');
-    menuPlayBtn.style.setProperty('visibility', 'visible');
-    menuHighScoresBtn.style.setProperty('visibility', 'visible');
-    menuColorTitle.style.setProperty('visibility', 'visible');
-    menuColorBtn.style.setProperty('visibility', 'visible');
-    menu.style.setProperty('visibility', 'visible');
-    menuTitle.style.setProperty('animation', 'fadeIn 1s');
-    menuPlayBtn.style.setProperty('animation', 'fadeIn 1s');
-    menuHighScoresBtn.style.setProperty('animation', 'fadeIn 1s');
-    menuColorTitle.style.setProperty('animation', 'fadeIn 1s');
-    menuColorBtn.style.setProperty('animation', 'fadeIn 1s');
-    menu.style.setProperty('animation', 'fadeIn 1s');
+    menuFadeIn();
   }, 1000);
   setTimeout(function(){
     highScores.style.setProperty('visibility', 'hidden');
@@ -194,11 +199,26 @@ var secondHalfOfBoard = [];
 var playerNameValue;
 var difficultyValue;
 var boardWrapper = document.getElementById('boardWrapper');
+var seconds = 0;
+var minutes = 0;
 var boardCreated = false;
 var firstOverturn = false;
 var secondOverturn = false;
 var firstCard;
 var secondCard;
+var tryCounter = 0;
+var timerStopped = true;
+var scores;
+var successfulTries = 0;
+var gamePauseBtn = document.getElementById('gamePauseBtn');
+var pauseWrapper = document.getElementById('pauseWrapper');
+var gamePauseContinueBtn = document.getElementById('gamePauseContinueBtn');
+var gamePauseBackBtn = document.getElementById('gamePauseBackBtn');
+var gameStarted = false;
+
+function glowing(object){
+  object.style.setProperty('animation', 'glowing .7s infinite alternate');
+}
 
 function severalRandom(min, max, num) {
     var i, arr = [], res = [];
@@ -223,6 +243,19 @@ function init(){
     board.push(firstHalfOfBoard[i]);
     board.push(secondHalfOfBoard[i]);
   }
+}
+
+function gameTimer(){
+  if(!timerStopped){
+    if(seconds>=59){
+      seconds = 0;
+      minutes++;
+    }else{
+      seconds++;
+    }
+  } 
+  document.getElementById('timer').textContent = ((minutes < 10) ? "0" : "") + minutes+":"+((seconds < 10) ? "0" : "") + seconds;
+  setTimeout(function(){ gameTimer()}, 1000);
 }
 
 function createBoard(){
@@ -255,19 +288,44 @@ function createBoard(){
       div.style.setProperty('line-height', '36px');
       div.style.setProperty('font-size', '20px');
     }
-
     boardWrapper.appendChild(div);
-    setTimeout(function(){
-      boardWrapper.style.setProperty('animation', 'fadeToBlack 1s');
-
-      setTimeout(function(){
-        boardWrapper.style.setProperty('color', 'black');
-        boardCreated = true;
-     }, 900);
-    }, 10000);
   }
+  setTimeout(function(){
+    boardWrapper.style.setProperty('animation', 'fadeToBlack 1s');
+    setTimeout(function(){
+      boardWrapper.style.setProperty('color', 'black');
+      boardCreated = true;
+    }, 900);
+    }, 10000);
 }
 
+function scoreCalculation(){
+  var minTime = difficultyValue*difficultyValue/2 * 4;
+  var maxTime = 0;
+  var absTime = minutes * 60 + seconds;
+  var maxTries = difficultyValue*difficultyValue;
+  var tryScore;
+
+  for(var i = 0, diff = difficultyValue*difficultyValue*2; i < difficultyValue*difficultyValue/2; i++, diff = diff - 4){
+    maxTime += diff;
+  }
+  
+  maxTime -= minTime;
+  absTime -= minTime;
+  tryScore = tryCounter - maxTries;
+
+  if(tryScore > 0)
+    absTime += tryScore * 4;
+
+  if(absTime > maxTime)
+    scores = 0;
+  else if(absTime <= 0)
+    scores = 100;
+  else
+    scores = 100 - (absTime * 100 / maxTime);
+  
+}
+gameTimer();
 function gameLogic(){
   boardWrapper.onclick = function(event){
     var target = event.target;
@@ -276,48 +334,103 @@ function gameLogic(){
       target.className = "selected";
       firstCard = target;
       firstOverturn = true;
-    }else if(!secondOverturn){
+    }else if(target.id == 'card' && boardCreated && !secondOverturn && target != firstCard){
       target.style.setProperty('animation', 'selecting 1s');
       target.className = "selected";
       secondCard = target;
       secondOverturn = true;
+      tryCounter++;
+      document.getElementById('tries').textContent = tryCounter;
       if(firstCard.textContent == secondCard.textContent){
         setTimeout(function(){
           firstCard.style.setProperty('animation', 'fadeOut 1s');
           secondCard.style.setProperty('animation', 'fadeOut 1s');
-        }, 1000);
+        }, 1100);
         setTimeout(function(){
           firstCard.style.setProperty('visibility', 'hidden');
           secondCard.style.setProperty('visibility', 'hidden');
           firstOverturn = false;
           secondOverturn = false;
-        }, 1900);
+        }, 2000);
+        successfulTries++;
+        //TODO
       }else{
         setTimeout(function(){
           firstCard.style.setProperty('animation', 'deselecting 1s');
           secondCard.style.setProperty('animation', 'deselecting 1s');
-        }, 1000);
+        }, 900);
         setTimeout(function(){
           firstCard.className = null;
           secondCard.className = null;
           firstOverturn = false;
           secondOverturn = false;
-        }, 1100);
+        }, 1000);
       }
     }
+    if(successfulTries >= difficultyValue*difficultyValue/2){
+      scoreCalculation();
+      timerStopped = true;
+    }
   }
+  gamePauseBtn.addEventListener("click", function(){
+    pauseWrapper.style.setProperty("visibility", "visible");
+    pauseWrapper.style.setProperty('animation', 'fadeIn .5s');
+    timerStopped = true;
+  }, false);
+  gamePauseContinueBtn.addEventListener("click", function(){
+    pauseWrapper.style.setProperty('animation', 'fadeOut .5s');
+    setTimeout(function(){
+      pauseWrapper.style.setProperty("visibility", "hidden");
+     }, 250);
+    timerStopped = false;
+  }, false);
+  gamePauseBackBtn.addEventListener("click", function(){
+    game.style.setProperty('animation', 'fadeOut 1s');
+    pauseWrapper.style.setProperty('animation', 'fadeOut .5s');
+
+    setTimeout(function(){
+      pauseWrapper.style.setProperty("visibility", "hidden");
+     }, 250);
+
+    setTimeout(function(){
+      game.style.setProperty('visibility', 'hidden');
+      menuFadeIn();
+     }, 800);
+    setTimeout(function(){
+      menu.style.setProperty('animation', 'glowing .7s infinite alternate');
+      gameDeconstructer();
+     }, 1800);
+  }, false);
 }
 
+function gameDeconstructer(){
+  while(boardWrapper.firstChild){
+    boardWrapper.removeChild(boardWrapper.firstChild);
+  }
+  boardWrapper.style.setProperty('color', 'white');
+  gameStarted = false;
+  minutes = 0;
+  seconds = 0;
+  firstOverturn = false;
+  secondOverturn = false;
+  boardCreated = false;
+  timerStopped = false;
+  tryCounter = 0;
+  timerStopped = true;
+  document.getElementById('tries').textContent = 0;
+}
 
 startBtn.addEventListener("click", function(){
   if(difficulty.value == 0){
     alert('choose difficulty');
-  }else{
+  }else if(!gameStarted){
+    gameStarted = true;
     menuFadeOut();
     gameFadeIn();
     init();
     setTimeout(createBoard(), 2000);
     gameLogic();
+    var handle = setTimeout(function(){ timerStopped = false;}, 11000);
   }
 }, false);
 
