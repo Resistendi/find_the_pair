@@ -24,6 +24,33 @@ var tabNav3 = document.getElementById('tab-nav-3');
 var tabNav4 = document.getElementById('tab-nav-4');
 var hsBackBtn = document.getElementById('hsBackBtn');
 
+//highscores initialization
+var highScorePlayers = [];
+
+highScorePlayers = localStorage.highScorePlayers6x6 ? JSON.parse(localStorage.highScorePlayers6x6) : [];
+for(var i = 0; i < highScorePlayers.length; i++){
+  document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+  document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+}
+
+highScorePlayers = localStorage.highScorePlayers8x8 ? JSON.parse(localStorage.highScorePlayers8x8) : [];
+for(var i = 0; i < highScorePlayers.length; i++){
+  document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+  document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+}
+
+highScorePlayers = localStorage.highScorePlayers10x10 ? JSON.parse(localStorage.highScorePlayers10x10) : [];
+for(var i = 0; i < highScorePlayers.length; i++){
+  document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+  document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+}
+  
+highScorePlayers = localStorage.highScorePlayers12x12 ? JSON.parse(localStorage.highScorePlayers12x12) : [];
+for(var i = 0; i < highScorePlayers.length; i++){
+  document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+  document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+}
+
 //change theme color
 menuColorBtn.addEventListener("change", function(){
   mainWrapper.style.setProperty('--theme-color', menuColorBtn.value)
@@ -214,11 +241,9 @@ var gamePauseBtn = document.getElementById('gamePauseBtn');
 var pauseWrapper = document.getElementById('pauseWrapper');
 var gamePauseContinueBtn = document.getElementById('gamePauseContinueBtn');
 var gamePauseBackBtn = document.getElementById('gamePauseBackBtn');
+var gameWinBackBtn = document.getElementById('gameWinBackBtn');
+var winAlertWrapper = document.getElementById('winAlertWrapper');
 var gameStarted = false;
-
-function glowing(object){
-  object.style.setProperty('animation', 'glowing .7s infinite alternate');
-}
 
 function severalRandom(min, max, num) {
     var i, arr = [], res = [];
@@ -257,6 +282,7 @@ function gameTimer(){
   document.getElementById('timer').textContent = ((minutes < 10) ? "0" : "") + minutes+":"+((seconds < 10) ? "0" : "") + seconds;
   setTimeout(function(){ gameTimer()}, 1000);
 }
+gameTimer();
 
 function createBoard(){
   for(var i = 0; i < difficultyValue*difficultyValue; i++){
@@ -294,19 +320,21 @@ function createBoard(){
     boardWrapper.style.setProperty('animation', 'fadeToBlack 1s');
     setTimeout(function(){
       boardWrapper.style.setProperty('color', 'black');
+      gamePauseBtn.style.setProperty('animation', 'fadeIn 1s');
+      gamePauseBtn.style.setProperty('visibility', 'visible');
       boardCreated = true;
     }, 900);
     }, 10000);
 }
 
 function scoreCalculation(){
-  var minTime = difficultyValue*difficultyValue/2 * 4;
+  var minTime = difficultyValue*difficultyValue/2 * 2;
   var maxTime = 0;
   var absTime = minutes * 60 + seconds;
   var maxTries = difficultyValue*difficultyValue;
   var tryScore;
 
-  for(var i = 0, diff = difficultyValue*difficultyValue*2; i < difficultyValue*difficultyValue/2; i++, diff = diff - 4){
+  for(var i = 0, diff = difficultyValue*difficultyValue; i < difficultyValue*difficultyValue/2; i++, diff--){
     maxTime += diff;
   }
   
@@ -322,10 +350,78 @@ function scoreCalculation(){
   else if(absTime <= 0)
     scores = 100;
   else
-    scores = 100 - (absTime * 100 / maxTime);
-  
+    scores = Math.round(100 - (absTime * 100 / maxTime));
+
+
 }
-gameTimer();
+
+function highScoresCalculation(){
+  var hsPlayer = {};
+
+  hsPlayer.name = playerNameValue;
+  hsPlayer.score = scores;
+
+  if(difficultyValue == 6){
+    highScorePlayers = localStorage.highScorePlayers6x6 ? JSON.parse(localStorage.highScorePlayers6x6) : [];
+  }
+  if(difficultyValue == 8){
+    highScorePlayers = localStorage.highScorePlayers8x8 ? JSON.parse(localStorage.highScorePlayers8x8) : [];
+  }
+  if(difficultyValue == 10){
+    highScorePlayers = localStorage.highScorePlayers10x10 ? JSON.parse(localStorage.highScorePlayers10x10) : [];
+  }
+  if(difficultyValue == 12){
+    highScorePlayers = localStorage.highScorePlayers12x12 ? JSON.parse(localStorage.highScorePlayers12x12) : [];
+  }
+
+  highScorePlayers.push(hsPlayer);
+
+  //bubble sort
+  for (var i = highScorePlayers.length-1; i>=0; i--){
+   for(var j = 1; j<=i; j++){
+     if(highScorePlayers[j-1].score>highScorePlayers[j].score){
+         var temp = highScorePlayers[j-1];
+         highScorePlayers[j-1] = highScorePlayers[j];
+         highScorePlayers[j] = temp;
+      }
+    }
+  }
+
+  if(highScorePlayers.length > 10){
+    highScorePlayers.pop();
+  }
+
+  if(difficultyValue == 6){
+    localStorage.highScorePlayers6x6 = JSON.stringify(highScorePlayers);
+    for(var i = 0; i < highScorePlayers.length; i++){
+      document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+      document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+    }
+  }
+  if(difficultyValue == 8){
+    localStorage.highScorePlayers8x8 = JSON.stringify(highScorePlayers);
+    for(var i = 0; i < highScorePlayers.length; i++){
+      document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+      document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+    }
+  }
+  if(difficultyValue == 10){
+    localStorage.highScorePlayers10x10 = JSON.stringify(highScorePlayers);
+    for(var i = 0; i < highScorePlayers.length; i++){
+      document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+      document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+    }
+  }
+  if(difficultyValue == 12){
+    localStorage.highScorePlayers12x12 = JSON.stringify(highScorePlayers);
+    for(var i = 0; i < highScorePlayers.length; i++){
+      document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+      document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+    }
+  }
+
+}
+
 function gameLogic(){
   boardWrapper.onclick = function(event){
     var target = event.target;
@@ -343,15 +439,15 @@ function gameLogic(){
       document.getElementById('tries').textContent = tryCounter;
       if(firstCard.textContent == secondCard.textContent){
         setTimeout(function(){
-          firstCard.style.setProperty('animation', 'fadeOut 1s');
-          secondCard.style.setProperty('animation', 'fadeOut 1s');
-        }, 1100);
+          firstCard.style.setProperty('animation', 'fadeOut .5s');
+          secondCard.style.setProperty('animation', 'fadeOut .5s');
+        }, 900);
         setTimeout(function(){
           firstCard.style.setProperty('visibility', 'hidden');
           secondCard.style.setProperty('visibility', 'hidden');
           firstOverturn = false;
           secondOverturn = false;
-        }, 2000);
+        }, 1200);
         successfulTries++;
         //TODO
       }else{
@@ -369,7 +465,11 @@ function gameLogic(){
     }
     if(successfulTries >= difficultyValue*difficultyValue/2){
       scoreCalculation();
+      highScoresCalculation();
       timerStopped = true;
+      setTimeout(function(){
+          winAlertFunc();
+      }, 2000);
     }
   }
   gamePauseBtn.addEventListener("click", function(){
@@ -387,23 +487,54 @@ function gameLogic(){
   gamePauseBackBtn.addEventListener("click", function(){
     game.style.setProperty('animation', 'fadeOut 1s');
     pauseWrapper.style.setProperty('animation', 'fadeOut .5s');
+    winAlertWrapper.style.setProperty('animation', 'fadeOut .5s');
 
     setTimeout(function(){
       pauseWrapper.style.setProperty("visibility", "hidden");
+      winAlertWrapper.style.setProperty("visibility", "hidden");
      }, 250);
 
     setTimeout(function(){
       game.style.setProperty('visibility', 'hidden');
+      gamePauseBtn.style.setProperty('visibility', 'hidden');
       menuFadeIn();
      }, 800);
     setTimeout(function(){
       menu.style.setProperty('animation', 'glowing .7s infinite alternate');
-      gameDeconstructer();
+      gameDeconstructor();
+     }, 1800);
+  }, false);
+  gameWinBackBtn.addEventListener("click", function(){
+    game.style.setProperty('animation', 'fadeOut 1s');
+    winAlertWrapper.style.setProperty('animation', 'fadeOut .5s');
+
+    setTimeout(function(){
+      winAlertWrapper.style.setProperty("visibility", "hidden");
+     }, 250);
+
+    setTimeout(function(){
+      game.style.setProperty('visibility', 'hidden');
+      gamePauseBtn.style.setProperty('visibility', 'hidden');
+      menuFadeIn();
+     }, 800);
+    setTimeout(function(){
+      menu.style.setProperty('animation', 'glowing .7s infinite alternate');
+      gameDeconstructor();
      }, 1800);
   }, false);
 }
 
-function gameDeconstructer(){
+function winAlertFunc(){
+  var lines = document.getElementById('winAlert').childNodes;
+  lines[1].textContent = "Congratulations " + playerNameValue + "!";
+  lines[3].textContent = "You won in " + minutes + " minutes " + seconds + " seconds, with " + tryCounter + " tries.";
+  lines[5].textContent = "Your scores: " + scores + ".";
+  
+  winAlertWrapper.style.setProperty("visibility", "visible");
+  winAlertWrapper.style.setProperty('animation', 'fadeIn .5s');
+}
+
+function gameDeconstructor(){
   while(boardWrapper.firstChild){
     boardWrapper.removeChild(boardWrapper.firstChild);
   }
@@ -417,6 +548,9 @@ function gameDeconstructer(){
   timerStopped = false;
   tryCounter = 0;
   timerStopped = true;
+  board = [];
+  firstHalfOfBoard = [];
+  secondHalfOfBoard = [];
   document.getElementById('tries').textContent = 0;
 }
 
@@ -430,7 +564,7 @@ startBtn.addEventListener("click", function(){
     init();
     setTimeout(createBoard(), 2000);
     gameLogic();
-    var handle = setTimeout(function(){ timerStopped = false;}, 11000);
+    setTimeout(function(){ timerStopped = false;}, 11000);
   }
 }, false);
 
