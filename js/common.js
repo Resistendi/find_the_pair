@@ -25,38 +25,16 @@ var tabNav4 = document.getElementById('tab-nav-4');
 var hsBackBtn = document.getElementById('hsBackBtn');
 
 //highscores initialization
-var highScorePlayers = [];
-
-highScorePlayers = localStorage.highScorePlayers6x6 ? JSON.parse(localStorage.highScorePlayers6x6) : [];
-for(var i = 0; i < highScorePlayers.length; i++){
-  document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
-  document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
-}
-
-highScorePlayers = localStorage.highScorePlayers8x8 ? JSON.parse(localStorage.highScorePlayers8x8) : [];
-for(var i = 0; i < highScorePlayers.length; i++){
-  document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
-  document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
-}
-
-highScorePlayers = localStorage.highScorePlayers10x10 ? JSON.parse(localStorage.highScorePlayers10x10) : [];
-for(var i = 0; i < highScorePlayers.length; i++){
-  document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
-  document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
-}
-  
-highScorePlayers = localStorage.highScorePlayers12x12 ? JSON.parse(localStorage.highScorePlayers12x12) : [];
-for(var i = 0; i < highScorePlayers.length; i++){
-  document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
-  document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
-}
+refreshHighScores();
 
 //change theme color
 menuColorBtn.addEventListener("change", function(){
   mainWrapper.style.setProperty('--theme-color', menuColorBtn.value)
 }, false);
 
-//menu hide func
+//menu animations
+
+  //menu hide func
 function menuFadeOut(){
   menuTitle.style.setProperty('animation', 'fadeOut 1s');
   menuPlayBtn.style.setProperty('animation', 'fadeOut 1s');
@@ -69,21 +47,20 @@ function menuFadeOut(){
   startBtn.style.setProperty('animation', 'fadeOut 1s');
   
   setTimeout(function(){
-      menuTitle.style.setProperty('visibility', 'hidden');
-      menuPlayBtn.style.setProperty('visibility', 'hidden');
-      menuHighScoresBtn.style.setProperty('visibility', 'hidden');
-      menuColorTitle.style.setProperty('visibility', 'hidden');
-      menuColorBtn.style.setProperty('visibility', 'hidden');
-      menu.style.setProperty('visibility', 'hidden');
-      playerName.style.setProperty('visibility', 'hidden');
-      difficultyBtn.style.setProperty('visibility', 'hidden');
-      backBtn.style.setProperty('visibility', 'hidden');
-      startBtn.style.setProperty('visibility', 'hidden');
-
+    menuTitle.style.setProperty('visibility', 'hidden');
+    menuPlayBtn.style.setProperty('visibility', 'hidden');
+    menuHighScoresBtn.style.setProperty('visibility', 'hidden');
+    menuColorTitle.style.setProperty('visibility', 'hidden');
+    menuColorBtn.style.setProperty('visibility', 'hidden');
+    menu.style.setProperty('visibility', 'hidden');
+    playerName.style.setProperty('visibility', 'hidden');
+    difficultyBtn.style.setProperty('visibility', 'hidden');
+    backBtn.style.setProperty('visibility', 'hidden');
+    startBtn.style.setProperty('visibility', 'hidden');
     }, 780);
 }
 
-//menu fade in func
+  //menu fade in func
 function menuFadeIn(){
   menuTitle.style.setProperty('visibility', 'visible');
   menuPlayBtn.style.setProperty('visibility', 'visible');
@@ -99,7 +76,7 @@ function menuFadeIn(){
   menu.style.setProperty('animation', 'fadeIn 1s');
 }
 
-//game field fadeIn func
+  //game field fadeIn func
 function gameFadeIn(){
   menu.style.setProperty('animation', 'fadeOut 1s');
 
@@ -113,7 +90,7 @@ function gameFadeIn(){
   }, 1500);
 }
 
-//prestart menu transition
+  //menu to prestart menu transition
 menuPlayBtn.addEventListener("click", function(){
   menuPlayBtn.style.setProperty('animation', 'playBtnToName 1s');
   menuHighScoresBtn.style.setProperty('animation', 'highScoreBtnToDif 1s');
@@ -139,7 +116,7 @@ menuPlayBtn.addEventListener("click", function(){
   }, 800);
 }, false);
 
-//back menu transition
+  //prestart menu to menu transition
 backBtn.addEventListener("click", function(){
   playerName.style.setProperty('animation', 'nameToPlayBtn 1s');
   difficultyBtn.style.setProperty('animation', 'diffToHSBtn 1s');
@@ -168,7 +145,7 @@ backBtn.addEventListener("click", function(){
  }, 800);  
 }, false);
 
-//high scores transition
+  //menu to high scores transition
 menuHighScoresBtn.addEventListener("click", function(){
   menuFadeOut();
   hsWrapper.style.setProperty('visibility', 'visible');
@@ -187,7 +164,7 @@ menuHighScoresBtn.addEventListener("click", function(){
   }, 1800);
 }, false);
 
-//back from hs transition
+  //high scores to menu transition
 hsBackBtn.addEventListener("click", function(){
   hsBackBtn.style.setProperty('animation', 'fadeOut .3s');
   hsWrapper.style.setProperty('animation', 'fadeOut .7s');
@@ -244,6 +221,7 @@ var gamePauseBackBtn = document.getElementById('gamePauseBackBtn');
 var gameWinBackBtn = document.getElementById('gameWinBackBtn');
 var winAlertWrapper = document.getElementById('winAlertWrapper');
 var gameStarted = false;
+var highScorePlayers = [];
 
 function severalRandom(min, max, num) {
     var i, arr = [], res = [];
@@ -287,6 +265,7 @@ gameTimer();
 function createBoard(){
   for(var i = 0; i < difficultyValue*difficultyValue; i++){
     var div = document.createElement('div');
+    div.className = "border";
     div.id = "card";
     div.style.setProperty('animation', 'fadeIn 1s');
     div.textContent = board[i];
@@ -351,15 +330,15 @@ function scoreCalculation(){
     scores = 100;
   else
     scores = Math.round(100 - (absTime * 100 / maxTime));
-
-
 }
 
 function highScoresCalculation(){
   var hsPlayer = {};
+  var now = new Date();
 
   hsPlayer.name = playerNameValue;
   hsPlayer.score = scores;
+  hsPlayer.date = now;
 
   if(difficultyValue == 6){
     highScorePlayers = localStorage.highScorePlayers6x6 ? JSON.parse(localStorage.highScorePlayers6x6) : [];
@@ -379,7 +358,7 @@ function highScoresCalculation(){
   //bubble sort
   for (var i = highScorePlayers.length-1; i>=0; i--){
    for(var j = 1; j<=i; j++){
-     if(highScorePlayers[j-1].score>highScorePlayers[j].score){
+     if(highScorePlayers[j-1].score<highScorePlayers[j].score){
          var temp = highScorePlayers[j-1];
          highScorePlayers[j-1] = highScorePlayers[j];
          highScorePlayers[j] = temp;
@@ -391,35 +370,57 @@ function highScoresCalculation(){
     highScorePlayers.pop();
   }
 
-  if(difficultyValue == 6){
+  if(difficultyValue == 6)
     localStorage.highScorePlayers6x6 = JSON.stringify(highScorePlayers);
-    for(var i = 0; i < highScorePlayers.length; i++){
-      document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
-      document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
-    }
-  }
-  if(difficultyValue == 8){
+
+  if(difficultyValue == 8)
     localStorage.highScorePlayers8x8 = JSON.stringify(highScorePlayers);
-    for(var i = 0; i < highScorePlayers.length; i++){
-      document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
-      document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
-    }
-  }
-  if(difficultyValue == 10){
+
+  if(difficultyValue == 10)
     localStorage.highScorePlayers10x10 = JSON.stringify(highScorePlayers);
-    for(var i = 0; i < highScorePlayers.length; i++){
-      document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
-      document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
-    }
-  }
-  if(difficultyValue == 12){
+
+  if(difficultyValue == 12)
     localStorage.highScorePlayers12x12 = JSON.stringify(highScorePlayers);
-    for(var i = 0; i < highScorePlayers.length; i++){
-      document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
-      document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
-    }
+
+  refreshHighScores();
+}
+
+function refreshHighScores(){
+  highScorePlayers = localStorage.highScorePlayers6x6 ? JSON.parse(localStorage.highScorePlayers6x6) : [];
+  for(var i = 0; i < highScorePlayers.length; i++){
+    var hsDate = new Date(highScorePlayers[i].date);
+    var dateStr = "Date: "+ hsDate.getDate() + "."+ (hsDate.getMonth() + 1) + "." + hsDate.getFullYear();
+    document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[3].setAttribute('data-title', dateStr);
+    document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+    document.getElementById('table6x6').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score; 
   }
 
+  highScorePlayers = localStorage.highScorePlayers8x8 ? JSON.parse(localStorage.highScorePlayers8x8) : [];
+  for(var i = 0; i < highScorePlayers.length; i++){
+    var hsDate = new Date(highScorePlayers[i].date);
+    var dateStr = "Date: "+ hsDate.getDate() + "."+ (hsDate.getMonth() + 1) + "." + hsDate.getFullYear();
+    document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[3].setAttribute('data-title', dateStr);
+    document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+    document.getElementById('table8x8').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+  }
+
+  highScorePlayers = localStorage.highScorePlayers10x10 ? JSON.parse(localStorage.highScorePlayers10x10) : [];
+  for(var i = 0; i < highScorePlayers.length; i++){
+    var hsDate = new Date(highScorePlayers[i].date);
+    var dateStr = "Date: "+ hsDate.getDate() + "."+ (hsDate.getMonth() + 1) + "." + hsDate.getFullYear();
+    document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[3].setAttribute('data-title', dateStr);
+    document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+    document.getElementById('table10x10').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+  }
+    
+  highScorePlayers = localStorage.highScorePlayers12x12 ? JSON.parse(localStorage.highScorePlayers12x12) : [];
+  for(var i = 0; i < highScorePlayers.length; i++){
+    var hsDate = new Date(highScorePlayers[i].date);
+    var dateStr = "Date: "+ hsDate.getDate() + "."+ (hsDate.getMonth() + 1) + "." + hsDate.getFullYear();
+    document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[3].setAttribute('data-title', dateStr);
+    document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[3].textContent = highScorePlayers[i].name;
+    document.getElementById('table12x12').childNodes[1].childNodes[i*2].childNodes[5].textContent = highScorePlayers[i].score;
+  }
 }
 
 function gameLogic(){
@@ -427,12 +428,12 @@ function gameLogic(){
     var target = event.target;
     if(target.id == 'card' && boardCreated && !firstOverturn){
       target.style.setProperty('animation', 'selecting 1s');
-      target.className = "selected";
+      target.className = "selected border";
       firstCard = target;
       firstOverturn = true;
     }else if(target.id == 'card' && boardCreated && !secondOverturn && target != firstCard){
       target.style.setProperty('animation', 'selecting 1s');
-      target.className = "selected";
+      target.className = "selected border";
       secondCard = target;
       secondOverturn = true;
       tryCounter++;
@@ -449,15 +450,14 @@ function gameLogic(){
           secondOverturn = false;
         }, 1200);
         successfulTries++;
-        //TODO
       }else{
         setTimeout(function(){
           firstCard.style.setProperty('animation', 'deselecting 1s');
           secondCard.style.setProperty('animation', 'deselecting 1s');
         }, 900);
         setTimeout(function(){
-          firstCard.className = null;
-          secondCard.className = null;
+          firstCard.className = "border";
+          secondCard.className = "border";
           firstOverturn = false;
           secondOverturn = false;
         }, 1000);
@@ -467,9 +467,7 @@ function gameLogic(){
       scoreCalculation();
       highScoresCalculation();
       timerStopped = true;
-      setTimeout(function(){
-          winAlertFunc();
-      }, 2000);
+      setTimeout(function(){ winAlertFunc(); }, 2000);
     }
   }
   gamePauseBtn.addEventListener("click", function(){
@@ -479,9 +477,10 @@ function gameLogic(){
   }, false);
   gamePauseContinueBtn.addEventListener("click", function(){
     pauseWrapper.style.setProperty('animation', 'fadeOut .5s');
+
     setTimeout(function(){
       pauseWrapper.style.setProperty("visibility", "hidden");
-     }, 250);
+    }, 250);
     timerStopped = false;
   }, false);
   gamePauseBackBtn.addEventListener("click", function(){
@@ -492,17 +491,18 @@ function gameLogic(){
     setTimeout(function(){
       pauseWrapper.style.setProperty("visibility", "hidden");
       winAlertWrapper.style.setProperty("visibility", "hidden");
-     }, 250);
+    }, 250);
 
     setTimeout(function(){
       game.style.setProperty('visibility', 'hidden');
       gamePauseBtn.style.setProperty('visibility', 'hidden');
       menuFadeIn();
-     }, 800);
+    }, 800);
+
     setTimeout(function(){
       menu.style.setProperty('animation', 'glowing .7s infinite alternate');
       gameDeconstructor();
-     }, 1800);
+    }, 1800);
   }, false);
   gameWinBackBtn.addEventListener("click", function(){
     game.style.setProperty('animation', 'fadeOut 1s');
@@ -510,17 +510,18 @@ function gameLogic(){
 
     setTimeout(function(){
       winAlertWrapper.style.setProperty("visibility", "hidden");
-     }, 250);
+    }, 250);
 
     setTimeout(function(){
       game.style.setProperty('visibility', 'hidden');
       gamePauseBtn.style.setProperty('visibility', 'hidden');
       menuFadeIn();
-     }, 800);
+    }, 800);
+
     setTimeout(function(){
       menu.style.setProperty('animation', 'glowing .7s infinite alternate');
       gameDeconstructor();
-     }, 1800);
+    }, 1800);
   }, false);
 }
 
@@ -539,6 +540,7 @@ function gameDeconstructor(){
     boardWrapper.removeChild(boardWrapper.firstChild);
   }
   boardWrapper.style.setProperty('color', 'white');
+  boardWrapper.style.setProperty('animation', null);
   gameStarted = false;
   minutes = 0;
   seconds = 0;

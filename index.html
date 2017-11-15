@@ -8,11 +8,11 @@
 </head>
 <body>
 	<div id="mainWrapper">
-		<div id="menu">
+		<div id="menu" class="border">
 			<h1 id="menuTitle">Menu</h1>
-			<input class="menuBtn" id="menuPlayBtn" type="button" value="Play">
-			<input id="playerName" type="text" value="Name">
-			<input class="menuBtn" id="menuHighScoresBtn" type="button" value="High Scores">
+			<input class="button" id="menuPlayBtn" type="button" value="Play">
+			<input id="playerName" type="text" value="Name" maxlength="10">
+			<input class="button" id="menuHighScoresBtn" type="button" value="High Scores">
 			<select name="difficulty" id="difficulty">
 				<option value="0">Difficulty</option>
 				<option value="6">6x6</option>
@@ -21,11 +21,11 @@
 				<option value="12">12x12</option>
 			</select>
 			<p id="menuColorTitle">Color: </p>
-			<input class="menuBtn" id="menuColorBtn" type="color" value="#ffffff">
-			<input id="backBtn" type="button" value="Back">
-			<input id="startBtn" type="button" value="Start">
+			<input class="button" id="menuColorBtn" type="color" value="#ffffff">
+			<input class="button preStartBtn" id="backBtn" type="button" value="Back">
+			<input class="button preStartBtn" id="startBtn" type="button" value="Start">
 		</div>
-		<div id="highscores">
+		<div id="highscores" class="border">
 			<div id="hsWrapper">
 				<input type="radio" name="tabs" id="tab-nav-1">
 				<label for="tab-nav-1">6x6</label>
@@ -37,226 +37,226 @@
 				<label for="tab-nav-4">12x12</label>
 				<div class="tabs">
 					<div>
-						<table>
+						<table id="table6x6">
 							<tr>
 								<td width="30px">1</td>
-								<td>aa</td>
-								<td width="30px">32</td>
+								<td class="dataTip">...</td>
+								<td width="36px">...</td>
 							</tr>
 							<tr>
 								<td>2</td>
-								<td>bbasd</td>
-								<td>51</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>3</td>
-								<td>1</td>
-								<td>1</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>4</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>5</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>6</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>7</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>8</td>
-								<td>SSSSSSSSSS...</td>
-								<td>35</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>9</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>10</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 						</table>
 					</div>
 					<div>
-						<table>
+						<table id="table8x8">
 							<tr>
 								<td width="30px">1</td>
-								<td>aa</td>
-								<td width="30px">32</td>
+								<td class="dataTip">...</td>
+								<td width="36px">...</td>
 							</tr>
 							<tr>
 								<td>2</td>
-								<td>bbasd</td>
-								<td>51</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>3</td>
-								<td>1</td>
-								<td>1</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>4</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>5</td>
-								<td>...</td>
-								<td>...</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>...</td>
-								<td>...</td>
-							</tr>
-							<tr>
-								<td>7</td>
-								<td>...</td>
-								<td>...</td>
-							</tr>
-							<tr>
-								<td>8</td>
-								<td>SSSSSSSSSS...</td>
-								<td>35</td>
-							</tr>
-							<tr>
-								<td>9</td>
-								<td>...</td>
-								<td>...</td>
-							</tr>
-							<tr>
-								<td>10</td>
-								<td>Azazin</td>
-								<td>9</td>
-							</tr>
-						</table>
-					</div>
-					<div>
-						<table>
-							<tr>
-								<td width="30px">1</td>
-								<td>aa</td>
-								<td width="30px">32</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>bbasd</td>
-								<td>51</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>1</td>
-								<td>1</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>...</td>
-								<td>...</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>6</td>
-								<td>asdasd</td>
-								<td>35.</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>7</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>8</td>
-								<td>SSSSSSSSSS...</td>
-								<td>35</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>9</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>10</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 						</table>
 					</div>
 					<div>
-						<table>
+						<table id="table10x10">
 							<tr>
 								<td width="30px">1</td>
-								<td>aa</td>
-								<td width="30px">32</td>
+								<td class="dataTip">...</td>
+								<td width="36px">...</td>
 							</tr>
 							<tr>
 								<td>2</td>
-								<td>bbasd</td>
-								<td>51</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>3</td>
-								<td>1</td>
-								<td>1</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>4</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>5</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>6</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>7</td>
-								<td>...</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 							<tr>
 								<td>8</td>
-								<td>SSSSSSSSSS...</td>
-								<td>35</td>
+								<td class="dataTip"...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>9</td>
-								<td>.231</td>
-								<td>99</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
 							</tr>
 							<tr>
 								<td>10</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
+							</tr>
+						</table>
+					</div>
+					<div>
+						<table id="table12x12">
+							<tr>
+								<td width="30px">1</td>
+								<td class="dataTip">...</td>
+								<td width="36px">...</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td class="dataTip">...</td>
+								<td>...</td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td class="dataTip">...</td>
 								<td>...</td>
 							</tr>
 						</table>
 					</div>
 				</div>
 			</div>	
-			<input id="hsBackBtn" type="button" value="Back">
+			<input class="button" id="hsBackBtn" type="button" value="Back">
 		</div>
-		<div id="game">
+		<div id="game" class="border">
 			<div id="boardWrapper">
 			</div>
 			<div id="gameInfo">
@@ -264,17 +264,26 @@
 				<div id="timer">00:00</div>
 				<div class="triesLabel">Tries:</div>
 				<div id="tries">0</div>
-				<input class="menuBtn" id="gamePauseBtn" type="button" value="Pause">
+				<input class="button" id="gamePauseBtn" type="button" value="Pause">
 			</div>
 		</div>
 		<div id="pauseWrapper"><p>Paused</p>
-		<div class="buttonsWrapper">
-			<input class="menuBtn" id="gamePauseBackBtn" type="button" value="Back to Menu">
-			<input class="menuBtn" id="gamePauseContinueBtn" type="button" value="Continue">
+			<div class="buttonsWrapper">
+			<input class="button" id="gamePauseBackBtn" type="button" value="Back to Menu">
+			<input class="button" id="gamePauseContinueBtn" type="button" value="Continue">
+			</div>
+		</div>
+		<div id="winAlertWrapper">
+			<div class="border" id="winAlert">
+				<p></p>
+				<p></p>
+				<p></p>
+			</div>
+			<div class="buttonsWrapper">
+				<input class="button" id="gameWinBackBtn" type="button" value="Back to Menu">
+			</div>
 		</div>
 	</div>
-	</div>
-
 	<script src="js/common.js"></script>
 </body>
 </html>
