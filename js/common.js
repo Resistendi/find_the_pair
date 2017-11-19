@@ -258,7 +258,7 @@ function gameTimer(){
     }
   } 
   document.getElementById('timer').textContent = ((minutes < 10) ? "0" : "") + minutes+":"+((seconds < 10) ? "0" : "") + seconds;
-  setTimeout(function(){ gameTimer()}, 1000);
+  setTimeout(function(){ gameTimer() }, 1000);
 }
 gameTimer();
 
