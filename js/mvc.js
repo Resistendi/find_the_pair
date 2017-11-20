@@ -651,7 +651,7 @@ var controller = {
 	},
 
 	gameWinBackBtnHandler: function(){
-		this.deconstructGame();
+		controller.deconstructGame();
 		view.winAlertToMenu();
 	}
 
