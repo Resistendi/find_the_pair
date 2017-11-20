@@ -573,18 +573,19 @@ var controller = {
 	},
 
 	startBtnHandler: function() {
-
+		
 		if(model.difficulty.value == 0){
 			alert('choose difficulty');
-		}else if(!this.gameStarted){
+		}else if(!controller.gameStarted){
+			controller.gameStarted = true;
     		view.prestartMenuToGame();
 			model.initBoard();
 			model.createBoard();
 			view.showBoard();
 			setTimeout(function(){
-				model.gameTimer();
 				model.timerStopped = false;
 		     	controller.boardCreated = true;
+		     	controller.gameStarted = false;
 		    }, 10900);
   		}		
 	},
@@ -599,11 +600,17 @@ var controller = {
 		view.pauseToGame();
 	},
 
+	deconstructGame: function() {
+		model.deconstructGame();
+		controller.tryCounter = 0;
+		controller.successfulTries = 0;
+		controller.boardCreated = false;
+	},
+
 	gamePauseBackBtnHandler: function() {
 		view.pauseToMenu();
 		setTimeout(function(){
-		     	model.deconstructGame();
-		     	this.gameStarted = false;
+		     controller.deconstructGame();
 		}, 1800);
 	},
 
@@ -644,6 +651,7 @@ var controller = {
 	},
 
 	gameWinBackBtnHandler: function(){
+		this.deconstructGame();
 		view.winAlertToMenu();
 	}
 
@@ -659,7 +667,8 @@ var controller = {
     },
 
     main: function() {
-
+    	model.refreshHighScores();
+    	model.gameTimer();
     },
     
     event: function() {
